@@ -143,8 +143,8 @@ class NetworkCodes
                 print("Could not get the studentLocations")
                 return
             }
-            
             constants.parse.studentLocations = studentLocations
+            print(constants.parse.studentLocations.count)
             completionHandlerForLocations(true,"")
         }
         task.resume()

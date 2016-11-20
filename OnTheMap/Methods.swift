@@ -15,4 +15,5 @@ struct methods
     static var getStudentLocations = "https://parse.udacity.com/parse/classes/StudentLocation?limit=100&order=-updatedAt"
     static var postStudentLocations = "https://parse.udacity.com/parse/classes/StudentLocation"
     static var updateStudentLocations = "https://parse.udacity.com/parse/classes/StudentLocation/\(constants.udacity.objectId)"
+    static var iscancelpressed = false
 }

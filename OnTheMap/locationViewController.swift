@@ -21,6 +21,12 @@ class locationViewController: UIViewController,UITextFieldDelegate,MKMapViewDele
     override func viewDidLoad() {
         action.isHidden = true
     }
+    override func viewWillAppear(_ animated: Bool) {
+        if methods.iscancelpressed == true
+        {
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.text = ""
     }

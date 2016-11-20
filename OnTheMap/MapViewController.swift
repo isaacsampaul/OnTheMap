@@ -85,8 +85,26 @@ class mapView: UIViewController,MKMapViewDelegate
         network.logout { (sucess, error) in
             if sucess == true
             {
-                let controller = self.storyboard?.instantiateViewController(withIdentifier: "logInViewController") as? UINavigationController
-                self.present(controller!, animated: true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
+                /*let controller = self.storyboard?.instantiateViewController(withIdentifier: "logInViewController") as? UINavigationController
+                self.present(controller!, animated: true, completion: nil)*/
+            }
+            else if error == "The Internet connection appears to be offline."
+            {
+                performUIUpdatesOnMain {
+                    self.uiEnable(Status: true)
+                    let alert = UIAlertController()
+                    alert.title = "Cannot Connect To Server"
+                    alert.message = "Please Check your Internet Connection"
+                    let continueAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default){
+                        
+                        action in alert.dismiss(animated: true, completion: nil)
+                        
+                    }
+                    alert.addAction(continueAction)
+                    self.present(alert, animated: true, completion: nil)
+                }
+
             }
             else
             {
@@ -145,13 +163,19 @@ class mapView: UIViewController,MKMapViewDelegate
     func loadAnnotation()
     {
         let locations = constants.parse.studentLocations!
-        
+        print(locations.count)
         activity.isHidden = true
         
         for dictionary in locations
         {
-            let lat = CLLocationDegrees(dictionary["latitude"] as! Double)
-            let long = CLLocationDegrees(dictionary["longitude"] as! Double)
+            print("\(dictionary["latitude"])")
+            if let latitude = dictionary["latitude"] as? Double
+            {
+            if let longitude = dictionary["longitude"] as? Double
+            {
+            let lat = CLLocationDegrees(latitude)
+            
+            let long = CLLocationDegrees(longitude)
             
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
@@ -167,7 +191,8 @@ class mapView: UIViewController,MKMapViewDelegate
             
             
             annotations.append(annotation)
-            
+        }
+        }
         }
         self.mapView.addAnnotations(annotations)
   

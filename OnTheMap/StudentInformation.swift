@@ -32,8 +32,10 @@ extension studentInformation
         var studentArray: [studentInformation] = []
         
         for d in constants.parse.studentLocations! {
-            
+            if d["latitude"] != nil
+            {
             studentArray.append(studentInformation(dictionary: d))
+            }
         }
         
         return studentArray

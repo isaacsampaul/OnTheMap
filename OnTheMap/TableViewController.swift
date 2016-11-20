@@ -17,7 +17,7 @@ class tableViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     @IBOutlet weak var refresh: UIBarButtonItem!
     
     
-    let studentDetails = studentInformation.studentInformations
+    
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,13 +27,13 @@ class tableViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return studentDetails.count
+        return studentInformation.studentInformations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "details", for: indexPath) as! tableViewCell
-        let student = studentDetails[indexPath.row]
+        let student = studentInformation.studentInformations[indexPath.row]
         cell.title.text = student.name
         cell.location.text = student.location
         return cell
@@ -42,7 +42,7 @@ class tableViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let student = studentDetails[indexPath.row]
+        let student = studentInformation.studentInformations[indexPath.row]
         let mediaURL = student.mediaURL
         print(mediaURL)
         
@@ -119,8 +119,23 @@ class tableViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         network.logout { (sucess, error) in
             if sucess == true
             {
-                let controller = self.storyboard?.instantiateViewController(withIdentifier: "logInViewController") as? UINavigationController
-                self.present(controller!, animated: true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
+            }
+            else if error == "The Internet connection appears to be offline."
+            {
+                performUIUpdatesOnMain {
+                    self.uiEnable(Status: true)
+                    let alert = UIAlertController()
+                    alert.title = "Cannot Connect To Server"
+                    alert.message = "Please Check your Internet Connection"
+                    let continueAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default){
+                        
+                        action in alert.dismiss(animated: true, completion: nil)
+                        
+                    }
+                    alert.addAction(continueAction)
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
             else
             {

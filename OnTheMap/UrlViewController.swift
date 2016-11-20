@@ -249,8 +249,8 @@ class UrlViewController: UIViewController,MKMapViewDelegate,UITextFieldDelegate,
     
     @IBAction func cancel(_ sender: AnyObject) {
         performUIUpdatesOnMain {
-            let controller = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as? UITabBarController
-            self.present(controller!, animated: true, completion: nil)
+            methods.iscancelpressed = true
+            self.dismiss(animated: true, completion: nil)
         }
     }
 
